@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+  </head>
+  <body class="bg-gray-100">
+    <!-- header part -->
+    <div id="Header" class="flex justify-between mx-5 my-5 px-5 py-3">
+      <div>
+        <span class="text-2xl font-semibold">Dashboard</span>
+      </div>
+      <div class="flex justify-center align-center gap-4">
+        <div id="logoClip" class="py-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+            />
+          </svg>
+        </div>
+        <div
+          class="flex justify-center align-center rounded-full bg-blue-500 w-8 py-1 text-white font-semibold"
+        >
+          B
+        </div>
+      </div>
+    </div>
+    <!-- header part end -->
+
+    <!-- task part  -->
+    <div id="tasks" class="mx-5 my-5 px-5 py-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div id="itemCard" class="px-5 py-2 rounded-lg shadow-md">
+        <div class="my-5"><span class="text-gray-500 text-xl">TOTAL TASK</span></div>
+        <div class="my-5 flex justify-between gap-3">
+          <div class="flex flex-col">
+            <span class="text-4xl font-semibold">{{total}}</span>
+            <span class="text-gray-500">11 last month</span>
+          </div>
+          <div
+            id="Clip Logo"
+            class="bg-blue-200 rounded-full text-blue-500 my-1 flex justify-center align-center py-3 px-3 h-12"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="itemCard" class="px-5 py-2 rounded-lg shadow-md">
+        <div class="my-5"><span class="text-gray-500 text-xl">COMPLETED TASK</span></div>
+        <div class="my-5 flex justify-between gap-3">
+          <div class="flex flex-col">
+            <span class="text-4xl font-semibold">{{completed}}</span>
+            <span class="text-gray-500">11 last month</span>
+          </div>
+          <div
+            id="Clip Logo"
+            class="bg-green-200 rounded-full text-green-500 my-1 flex justify-center align-center py-3 px-3 h-12"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="itemCard" class="px-5 py-2 rounded-lg shadow-md">
+        <div class="my-5"><span class="text-gray-500 text-xl">TASK IN PROGRESS</span></div>
+        <div class="my-5 flex justify-between gap-3">
+          <div class="flex flex-col">
+            <span class="text-4xl font-bold">{{in_progress}}</span>
+            <span class="text-gray-500">11 last month</span>
+          </div>
+          <div
+            id="Clip Logo"
+            class="bg-amber-100 rounded-full text-amber-700 my-1 flex justify-center align-center py-3 px-3 h-12"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="itemCard" class="px-5 py-2 rounded-lg shadow-md">
+        <div class="my-5"><span class="text-gray-500 text-xl">TODOS</span></div>
+        <div class="my-5 flex justify-between gap-3">
+          <div class="flex flex-col">
+            <span class="text-4xl font-bold">{{pending}}</span>
+            <span class="text-gray-500">11 last month</span>
+          </div>
+          <div
+            id="Clip Logo"
+            class="bg-purple-200 rounded-full text-purple-700 my-1 flex justify-center align-center py-3 px-3 h-12"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- task part end -->
+    <div id="TaskHistory" class="mx-5 my-5 px-5 py-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="shadow-xl py-5 px-5 rounded-xl">
+            <div>
+                <span class="text-3xl font-bold">Today's task</span>
+            </div>
+            <div id="TaskList">
+                <div class="flex justify-between my-5">
+                    <div class="flex align-center gap-1">
+                        <div class="h-2 w-2 rounded-full bg-green-500 my-2"></div>
+                        <div class="font-medium">Complete Project Proposal</div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">High</span>
+                    </div>
+                </div>
+                 <div class="flex justify-between my-5">
+                    <div class="flex align-center gap-1">
+                        <div class="h-2 w-2 rounded-full bg-amber-500 my-2"></div>
+                        <div class="font-medium">Review team updates</div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Normal</span>
+                    </div>
+                </div>
+                 <div class="flex justify-between my-5">
+                    <div class="flex align-center gap-1">
+                        <div class="h-2 w-2 rounded-full bg-blue-500 my-2"></div>
+                        <div class="font-medium">Prepare for client meeting</div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Low</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="shadow-xl py-5 px-5 rounded-xl">
+            <div>
+                <span class="text-3xl font-bold">All Tasks</span>
+            </div>
+            <div class="my-2">
+                <div class="grid grid-cols-4">
+                    <div><span class="text-gray-500 font-medium">TASK TITLE</span></div>
+                    <div><span class="text-gray-500 font-medium">PRIORITY</span></div>
+                    <div><span class="text-gray-500 font-medium">TEAM</span></div>
+                    <div><span class="text-gray-500 font-medium">CREATED AT</span></div>
+                </div>
+
+                {% for task in tasks %}
+                <div class="grid grid-cols-4 my-2 px-2">
+                    <div class="flex items-center  gap-1">
+                        <div class="h-2 w-2 rounded-full bg-green-400"></div>
+                        <div>
+                            <span>{{task.title}}</span>
+                        </div>
+                    </div>
+                    <div><span class="px-3 py-1 bg-blue-200 rounded-md text-blue-500 font-medium">{{task.details.get_priority_display}}</span></div>
+                    <div class="flex -space-x-2">
+                        <div class="h-8 w-8 rounded-full bg-blue-500 flex justify-center items-center text-white">CA</div>
+                        <div class="h-8 w-8 rounded-full bg-green-500 flex justify-center items-center text-white">JS</div>
+                        <div class="h-8 w-8 rounded-full bg-amber-500 flex justify-center items-center text-white">B</div>
+                    </div>
+                    <div><span class="text-gray-500">9 months ago</span></div>
+                </div>
+                {% endfor %}
+                
+                
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+    {% endblock footer %}
+
+  </body>
+</html>
