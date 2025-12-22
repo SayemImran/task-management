@@ -1,53 +1,66 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from tasks.forms import TaskForm, TaskModelForm
+from tasks.forms import TaskModelForm
 from tasks.models import Employee, Tasks
+from django.contrib.auth.decorators import user_passes_test, login_required
 
-# Create your views here.
-def onload(request):
-    return HttpResponse("<h1>Hi there</h1>")
 def home(request):
     return HttpResponse("Welcome to the task management System")
+def onload(request):
+    return HttpResponse("<h1>Hi there</h1>")
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists()
 def userdashboard(request):
-    return render(request,'user.html')
+     return render(request, 'user.html')
+ 
+@user_passes_test(is_admin, login_url='no-permission')
 def managerdashboard(request):
     tasks = Tasks.objects.all()
+
     total_task = tasks.count()
-    task_completed = Tasks.objects.filter(status="COMPLETED").count()
-    task_in_prog = Tasks.objects.filter(status="IN_PROGRESS").count()
-    task_pending = Tasks.objects.filter(status="PENDING").count()
+    task_completed = tasks.filter(status="COMPLETED").count()
+    task_in_prog = tasks.filter(status="IN_PROGRESS").count()
+    task_pending = tasks.filter(status="PENDING").count()
 
-    context={
-        "tasks":tasks,
-        "total":total_task,
-        "completed":task_completed,
-        "in_progress":task_in_prog,
-        "pending":task_pending
+    context = {
+        "tasks": tasks,
+        "total": total_task,
+        "completed": task_completed,
+        "in_progress": task_in_prog,
+        "pending": task_pending
     }
-    return render(request,'manager-dashboard.html',context)
 
+    return render(request, 'manager-dashboard.html', context)
 
+@user_passes_test(is_admin, login_url='no-permission')
 def create_task(request):
-    employees = Employee.objects.all()
-    form = TaskModelForm()
-
     if request.method == "POST":
         form = TaskModelForm(request.POST)
         if form.is_valid():
-            form.save()
-            return render(request,"taskForm.html",{"form":form,"msg":"Task added successfully ✅"})
-            # data = form.cleaned_data
-            # title = data.get('title')
-            # description = data.get('description')
-            # due_date = data.get('due_date')
-            # assigned_to = data.get('assigned_to')
+            task = form.save(commit=False)
+            task.save()
+            form.save_m2m()
+            return redirect('manager-dashboard')
+    else:
+        form = TaskModelForm()
 
-            # task = Tasks.objects.create(title=title,description=description, due_date= due_date)
-            # for emp_id in assigned_to:
-            #     employee = Employee.objects.get(id=emp_id)
-            #     task.assigned_to.add(employee)
-            # return HttpResponse("Task added successfully ✅")
-    context = {
-        "form":form
-    }
-    return render(request,"taskForm.html",context)
+    return render(request, "taskForm.html", {"form": form})
+
+@user_passes_test(is_admin, login_url='no-permission')
+def update_task(request, task_id):
+    task = get_object_or_404(Tasks, id=task_id)
+    if request.method == "POST":
+        form = TaskModelForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('manager-dashboard')
+    else:
+        form = TaskModelForm(instance=task)
+
+    return render(request, "taskForm.html", {"form": form, "msg": "Update Task"})
+
+@user_passes_test(is_admin, login_url='no-permission')
+def delete_task(request, task_id):
+    task = get_object_or_404(Tasks, id=task_id)
+    task.delete()  
+    return redirect('manager-dashboard')

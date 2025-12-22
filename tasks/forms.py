@@ -8,26 +8,25 @@ class TaskForm(forms.Form):
     assigned_to = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, *args, **kwargs):
-        employees = kwargs.pop("employees",[])
-        print(employees)
-        super().__init__(*args,**kwargs)
-
+        employees = kwargs.pop("employees", [])
+        super().__init__(*args, **kwargs)
         self.fields['assigned_to'].choices = [(emp.id, emp.name) for emp in employees]
 
 
 class TaskModelForm(forms.ModelForm):
     class Meta:
         model = Tasks
-        fields = ['title','description','due_date','assigned_to']
+        fields = ['project', 'title', 'description', 'due_date', 'assigned_to', 'status']
         widgets = {
             "title": forms.TextInput(attrs={
-                'class':"border border-gray-600 rounded-md p-1 mb-3 w-full",
-                'placeholder':"Enter the title name"
+                'class': "border border-gray-600 rounded-md p-1 mb-3 w-full",
+                'placeholder': "Enter the title name"
             }),
-            'description':forms.Textarea(attrs={
-                'class':"border border-gray-600 rounded-md p-1 h-10 mb-3 w-full",
-                'placeholder':"Describe here about the task"
+            'description': forms.Textarea(attrs={
+                'class': "border border-gray-600 rounded-md p-1 h-10 mb-3 w-full",
+                'placeholder': "Describe here about the task"
             }),
             "due_date": forms.SelectDateWidget,
-            "assigned_to" : forms.CheckboxSelectMultiple()
+            "assigned_to": forms.CheckboxSelectMultiple(),
+            "status": forms.Select()
         }

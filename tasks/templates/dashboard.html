@@ -155,6 +155,8 @@
         </div>
       </div>
     </div>
+    {% block content %}
+    
     <!-- task part end -->
     <div id="TaskHistory" class="mx-5 my-5 px-5 py-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div class="shadow-xl py-5 px-5 rounded-xl">
@@ -225,6 +227,7 @@
             </div>
         </div>
     </div>
+    {% endblock content %}
     {% block footer %}
     {% endblock footer %}
 
