@@ -1,5 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 class Project(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
@@ -8,15 +12,6 @@ class Project(models.Model):
     def __str__(self):  
         return self.name
 
-
-class Employee(models.Model):
-    name = models.CharField(max_length=250)
-    email = models.EmailField(unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Tasks(models.Model):
     STATUS_CHOICE = [
         ('PENDING', 'Pending'),
@@ -24,9 +19,10 @@ class Tasks(models.Model):
         ('COMPLETED', 'Completed')
     ]
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    assigned_to = models.ManyToManyField(Employee, related_name='tasks')
+    assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks')
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=500)
+    asset = models.ImageField(upload_to='task_asset', null=True, blank=True)
     due_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='PENDING')
     is_completed = models.BooleanField(default=False)
@@ -50,6 +46,5 @@ class TaskDetail(models.Model):
     assigned_to = models.CharField(max_length=100)
     notes = models.TextField(blank=True, null=True)
     priority = models.CharField(max_length=1, choices=Priority_Options, default=LOW)
-
     def __str__(self):  
         return f"Task details for {self.task.title}"

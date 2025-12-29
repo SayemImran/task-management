@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="min-h-screen bg-purple-950 flex items-center justify-center px-4">
+
+  <!-- Neon Compact Card -->
+  <div class="w-full max-w-sm bg-black/90 backdrop-blur-md 
+              border border-purple-500/30 rounded-xl
+              shadow-[0_0_30px_rgba(168,85,247,0.4)] p-6">
+
+    <!-- Heading -->
+    <h2 class="text-xl font-semibold text-purple-400 text-center mb-4 drop-shadow-[0_0_8px_rgba(168,85,247,0.7)]">
+      Edit Profile
+    </h2>
+
+    <!-- Profile Image -->
+    {% if request.user.profile_image %}
+    <img id="preview" src="{{ request.user.profile_image.url }}"
+         class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.6)] object-cover">
+    {% endif %}
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-3">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div>
+          <label class="block text-sm font-medium text-purple-200 mb-1">
+            {{ field.label }}
+          </label>
+          {{ field }}
+
+          {% if field.errors %}
+            <p class="text-xs text-red-500 mt-1">
+              {{ field.errors|striptags }}
+            </p>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full py-2 rounded-lg bg-purple-700 text-white font-medium 
+               hover:bg-purple-600 hover:shadow-[0_0_12px_rgba(168,85,247,0.7)] 
+               transition-all duration-300">
+        Update Profile
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<!-- JS Preview for Profile Image -->
+<script>
+function previewImage(event) {
+  const img = document.getElementById('preview')
+  img.src = URL.createObjectURL(event.target.files[0])
+}
+</script>
+
+{% endblock %}

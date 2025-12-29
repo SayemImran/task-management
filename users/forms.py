@@ -1,8 +1,12 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,PasswordResetForm,SetPasswordForm
+from django.contrib.auth.models import Group, Permission
 from django import forms
+from users.models import CustomUser
 import re
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
@@ -141,3 +145,101 @@ class CreateGroupForm(forms.ModelForm):
         labels = {
             'permissions': 'Assign Permissions'
         }
+
+
+class CustomPasswordChangeFrom(PasswordChangeForm):
+    pass
+class CustomPasswordResetForm(PasswordResetForm):
+    pass
+class CustomPasswordResetConfirmForm(SetPasswordForm):
+    pass
+
+# class EditProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ['email','first_name','last_name']
+    
+#     bio = forms.CharField(required=False)
+#     profile_image = forms.ImageField(required=False)
+
+#     def __init__(self, *args, **kwargs):
+#         print(kwargs)
+#         super().__init__(*args,**kwargs)
+
+#         if self.userprofile:
+#             self.fields['bio'].initial = self.userprofile.bio
+#             self.fields['profile_image'].initial = self.userprofile.profile_image
+    
+#     def save(self, commit= True):
+#         user = super().save(commit=False)
+#         if self.userprofile:
+#             self.userprofile.bio = self.cleaned_data.get('bio')
+#             self.userprofile.profile_image = self.cleaned_data.get('profile_image')
+
+#             if commit:
+#                 self.userprofile.save()
+#         if commit:
+#             user.save()
+#         return user
+"""
+class EditProfileForm(forms.ModelForm):
+    bio = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'w-full px-3 py-2 mb-2 rounded-lg bg-purple-900 text-purple-200 placeholder-purple-400 border border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]',
+            'rows': 3,
+            'placeholder': 'Write something about yourself...'
+        })
+    )
+
+    profile_image = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            'class': 'w-full text-sm text-purple-200 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-purple-800 file:text-purple-400 hover:file:bg-purple-700'
+        })
+    )
+
+    class Meta:
+         model = User
+         fields = ['email', 'first_name', 'last_name']
+         widgets = {
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-3 py-2 mb-2 rounded-lg bg-purple-900 text-purple-200 placeholder-purple-400 border border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]'
+            }),
+            'first_name': forms.TextInput(attrs={
+                'class': 'w-full px-3 py-2 mb-2 rounded-lg bg-purple-900 text-purple-200 placeholder-purple-400 border border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'w-full px-3 py-2 mb-2 rounded-lg bg-purple-900 text-purple-200 placeholder-purple-400 border border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]'
+            }),
+        }
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if self.user and hasattr(self.user, 'userprofile'):
+            self.fields['bio'].initial = self.user.userprofile.bio
+            self.fields['profile_image'].initial = self.user.userprofile.profile_image
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        if self.user and hasattr(self.user, 'userprofile'):
+            profile = self.user.userprofile
+            profile.bio = self.cleaned_data.get('bio')
+            if self.cleaned_data.get('profile_image'):
+                profile.profile_image = self.cleaned_data.get('profile_image')
+
+            if commit:
+                profile.save()
+
+        if commit:
+            user.save()
+
+        return user
+"""
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email','first_name','last_name','bio','profile_image']

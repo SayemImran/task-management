@@ -8,7 +8,8 @@
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static "css/output.css" %}">
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100">  
+  {% include "logged_nav.html" %}
     <!-- header part -->
     <div id="Header" class="flex justify-between mx-5 my-5 px-5 py-3">
       <div>

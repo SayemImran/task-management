@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Task</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .soft-neon {
+            text-shadow:
+                0 0 3px #ff6effaa,
+                0 0 7px #ff6eff55;
+        }
+
+        .soft-neon-button {
+            box-shadow: 0 0 5px #00ffff55, 0 0 10px #00ffff33;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .soft-neon-button:hover {
+            box-shadow: 0 0 8px #00ffff55, 0 0 16px #00ffff33;
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen">
+
+    <div class="bg-purple-900 p-8 rounded-xl shadow-lg w-full max-w-md border border-purple-700">
+        <h2 class="text-3xl font-semibold text-white soft-neon mb-6 text-center">
+            Are you sure you want to delete<br>"{{ object.title }}"?
+        </h2>
+
+        <form method="post" class="flex flex-col gap-4">
+            {% csrf_token %}
+            <button type="submit" class="soft-neon-button bg-purple-800 text-cyan-300 font-semibold py-2 px-4 rounded text-lg">
+                Yes, Delete
+            </button>
+            <a href="{% url 'manager-dashboard' %}" class="text-center text-cyan-300 hover:text-cyan-200 soft-neon">
+                Cancel
+            </a>
+        </form>
+    </div>
+
+</body>
+</html>

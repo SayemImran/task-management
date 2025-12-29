@@ -13,7 +13,7 @@
             <p>{{ msg }}</p>
         {% endif %}
     </div>
-    <form method="POST">
+    <form method="POST" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="Submit" class="bg-violet-950 text-white w-1/8 h-10 rounded-md font-semibold">Submit</button>

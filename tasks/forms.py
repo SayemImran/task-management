@@ -16,7 +16,7 @@ class TaskForm(forms.Form):
 class TaskModelForm(forms.ModelForm):
     class Meta:
         model = Tasks
-        fields = ['project', 'title', 'description', 'due_date', 'assigned_to', 'status']
+        fields = ['project', 'title', 'description', 'due_date','assigned_to', 'status','asset'] # add ''
         widgets = {
             "title": forms.TextInput(attrs={
                 'class': "border border-gray-600 rounded-md p-1 mb-3 w-full",
@@ -28,5 +28,11 @@ class TaskModelForm(forms.ModelForm):
             }),
             "due_date": forms.SelectDateWidget,
             "assigned_to": forms.CheckboxSelectMultiple(),
-            "status": forms.Select()
+            "status": forms.Select(),
+            "asset": forms.ClearableFileInput(attrs={
+            'class': "border border-gray-600 rounded-md p-1 mb-3 w-1/2",
+            }),
         }
+
+class TaskDetailModelForm(forms.ModelForm):
+    pass

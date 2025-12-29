@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-m*jp5_4&z8_ddbqehhskx_j&)+em!6@(qw$=f=@lyhku)ab1o7
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
+AUTH_USER_MODEL = 'users.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
@@ -136,6 +135,9 @@ STATICFILES_DIR = [
     BASE_DIR / 'static'
 ]
 
+MEDIA_URL='/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -147,3 +149,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ahhakim262142@gmail.com'
 EMAIL_HOST_PASSWORD = 'pqvn xeqe gbfq uqcj'
 FRONTEND_URL = 'http://127.0.0.1:8000'
+
+LOGIN_REDIRECT_URL = '/users/profile/'
+LOGIN_URL = '/users/sign-in'

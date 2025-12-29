@@ -1,66 +1,92 @@
 {% extends "dashboard.html" %}
 {% block title %}Manager Dashboard{% endblock title %}
 {% block content %}
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Manager Dashboard</h2>
+<div class="p-4 md:p-6 bg-gray-50 min-h-screen">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <h2 class="text-2xl font-bold text-gray-800">Manager Dashboard</h2>
+        </div>
 
-    <table class="min-w-full border border-gray-300 rounded-lg shadow-md">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="px-4 py-2 text-left font-semibold text-gray-700">Title</th>
-                <th class="px-4 py-2 text-left font-semibold text-gray-700">Description</th>
-                <th class="px-4 py-2 text-left font-semibold text-gray-700">Status</th>
-                <th class="px-4 py-2 text-left font-semibold text-gray-700">Due Date</th>
-                <th class="px-4 py-2 text-left font-semibold text-gray-700">Project</th>
-                <th class="px-4 py-2 text-left font-semibold text-gray-700">Assigned Employees</th>
-                <th class="px-4 py-2 text-center font-semibold text-gray-700">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr class="border-t hover:bg-gray-50">
-                <td class="px-4 py-2">{{ task.title }}</td>
-                <td class="px-4 py-2">{{ task.description }}</td>
-                <td class="px-4 py-2">
-                    <span class="px-2 py-1 rounded text-sm
-                        {% if task.status == 'COMPLETED' %}
-                            bg-green-100 text-green-700
-                        {% elif task.status == 'IN_PROGRESS' %}
-                            bg-yellow-100 text-yellow-700
-                        {% else %}
-                            bg-red-100 text-red-700
-                        {% endif %}
-                    ">
-                        {{ task.status }}
-                    </span>
-                </td>
-                <td class="px-4 py-2">{{ task.due_date }}</td>
-                <td class="px-4 py-2">{{ task.project.name }}</td>
-                <td class="px-4 py-2">
-                    {% for emp in task.assigned_to.all %}
-                        <span class="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">
-                            {{ emp.name }}
-                        </span>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
+        <div class="overflow-x-auto">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-200 text-gray-700 uppercase text-xs sm:text-sm">
+                        <th class="px-4 py-3 text-left font-semibold">Title</th>
+                        <th class="px-4 py-3 text-left font-semibold hidden lg:table-cell">Description</th>
+                        <th class="px-4 py-3 text-left font-semibold">Status</th>
+                        <th class="px-4 py-3 text-left font-semibold">Due Date</th>
+                        <th class="px-4 py-3 text-left font-semibold hidden md:table-cell">Project</th>
+                        <th class="px-4 py-3 text-left font-semibold">Assigned</th>
+                        <th class="px-4 py-3 text-center font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm">
+                    {% for task in tasks %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-4">
+                            <a href="{% url 'task-details' task.id %}">
+                                <p class="font-medium text-gray-900">{{ task.title }}</p>
+                            </a>
+                        </td>
+                        <td class="px-4 py-4 hidden lg:table-cell">
+                            <span class="truncate block max-w-xs">{{ task.description }}</span>
+                        </td>
+                        <td class="px-4 py-4 text-xs sm:text-sm">
+                            <span class="px-2 py-1 rounded-full font-semibold
+                                {% if task.status == 'COMPLETED' %}
+                                    bg-green-100 text-green-700
+                                {% elif task.status == 'IN_PROGRESS' %}
+                                    bg-yellow-100 text-yellow-700
+                                {% else %}
+                                    bg-red-100 text-red-700
+                                {% endif %}
+                            ">
+                                {{ task.status }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            {{ task.due_date }}
+                        </td>
+                        <td class="px-4 py-4 hidden md:table-cell">
+                            {{ task.project.name }}
+                        </td>
+                        <td class="px-4 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                {% for emp in task.assigned_to.all %}
+                                <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md text-[10px] sm:text-xs">
+                                    {{ emp.first_name }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex justify-center items-center space-x-2">
+                                <a href="{% url 'update-task' task.id %}" 
+                                   class="text-blue-600 hover:text-blue-900 bg-blue-50 p-1.5 rounded transition-colors" title="Edit">
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                   </svg>
+                                </a>
+                                <a href="{% url 'delete-task' task.id %}" 
+                                   class="text-red-600 hover:text-red-900 bg-red-50 p-1.5 rounded transition-colors"
+                                    title="Delete">
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                   </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-4 py-10 text-center text-gray-500 italic">
+                            No tasks available at the moment.
+                        </td>
+                    </tr>
                     {% endfor %}
-                </td>
-                <td class="px-4 py-2 text-center">
-                    <a href="{% url 'update-task' task.id %}" 
-                       class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2">
-                       Edit
-                    </a>
-                    <a href="{% url 'delete-task' task.id %}" 
-                       class="inline-block bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                       onclick="return confirm('Are you sure you want to delete this task?');">
-                       Delete
-                    </a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7" class="px-4 py-4 text-center text-gray-500">No tasks available</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock content %}
